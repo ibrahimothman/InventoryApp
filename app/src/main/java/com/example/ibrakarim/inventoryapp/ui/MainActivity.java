@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if(data.getCount() != 0){
+            productList.clear();
             data.moveToFirst();
             do{
                 Product product = new Product();
