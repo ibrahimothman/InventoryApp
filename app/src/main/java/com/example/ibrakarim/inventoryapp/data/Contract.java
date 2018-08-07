@@ -13,8 +13,8 @@ public class Contract {
     public static class ProductEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
         public static final String TABLE_NAME = "product_table";
-            public static final String NAME_COL = "name";
-        public static final String DESCRIPTION_COL = "desc";
+        public static final String NAME_COL = "name";
+        public static final String DESCRIPTION_COL = "description";
         public static final String PRICE_COL = "price";
         public static final String QUANTITY_COL = "quantity";
 //        public static final String STATUS_COL = "status";

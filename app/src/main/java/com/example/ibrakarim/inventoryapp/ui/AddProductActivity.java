@@ -1,11 +1,13 @@
 package com.example.ibrakarim.inventoryapp.ui;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddProductActivity extends AppCompatActivity {
 
+    private static final String TAG = AddProductActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.product_name_edittext)
@@ -62,12 +65,20 @@ public class AddProductActivity extends AppCompatActivity {
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
 
+        Log.d(TAG,name);
+        Log.d(TAG,desc);
+        Log.d(TAG,price);
+        Log.d(TAG,quantity);
+
         ContentValues cv = new ContentValues();
         cv.put(Contract.ProductEntry.NAME_COL,name);
         cv.put(Contract.ProductEntry.PRICE_COL,price);
         cv.put(Contract.ProductEntry.DESCRIPTION_COL,desc);
         cv.put(Contract.ProductEntry.QUANTITY_COL,quantity);
         getContentResolver().insert(Contract.ProductEntry.CONTENT_URI,cv);
+
+        Intent returnIntent = new Intent(this,MainActivity.class);
+        finish();
     }
 
 

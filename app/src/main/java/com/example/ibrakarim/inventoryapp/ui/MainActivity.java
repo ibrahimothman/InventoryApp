@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent addProductIntent = new Intent(MainActivity.this,AddProductActivity.class);
-                startActivityForResult(addProductIntent,ADD_PRODUCT_REQUEST_CODE);
+                startActivity(addProductIntent);
             }
         });
     }

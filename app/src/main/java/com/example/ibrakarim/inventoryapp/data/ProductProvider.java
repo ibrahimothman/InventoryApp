@@ -78,7 +78,7 @@ public class ProductProvider extends ContentProvider {
                     mUri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI, id);
                     Toast.makeText(getContext(), "successfully added to watchlist", Toast.LENGTH_LONG).show();
                 } else {
-                    throw new SQLException("insert failde");
+                    throw new SQLException();
                 }
                 break;
             default:

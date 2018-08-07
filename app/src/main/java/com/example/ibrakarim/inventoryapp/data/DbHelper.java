@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "products.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -15,17 +15,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String CREATE_FAV_TABLE_QUERY = "CREATE TABLE "+ Contract.ProductEntry.TABLE_NAME+
+        final String CREATE_PRODUCT_TABLE_QUERY = "CREATE TABLE "+ Contract.ProductEntry.TABLE_NAME+
                 "("+ Contract.ProductEntry._ID+" INTEGER PRIMARY KEY , "+
                 Contract.ProductEntry.NAME_COL+" TEXT NOT NULL , "+
                 Contract.ProductEntry.PRICE_COL+" TEXT NOT NULL , "+
-                Contract.ProductEntry.DESCRIPTION_COL+"TEXT NOT NULL , "+
-                Contract.ProductEntry.QUANTITY_COL+" TEXT NOT NULL , "+
-                Contract.ProductEntry.STATUS_COL+" TEXT NOT NULL, "+
-                Contract.ProductEntry.CATEGORY_COL+" TEXT NOT NULL, "+
-                Contract.ProductEntry.MODEL_COL+" TEXT NOT NULL ); ";
+                Contract.ProductEntry.DESCRIPTION_COL+" TEXT NOT NULL , "+
+                Contract.ProductEntry.QUANTITY_COL+" TEXT NOT NULL ); ";
 
-        db.execSQL(CREATE_FAV_TABLE_QUERY);
+        db.execSQL(CREATE_PRODUCT_TABLE_QUERY);
     }
 
     @Override
