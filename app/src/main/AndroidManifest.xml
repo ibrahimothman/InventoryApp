@@ -12,10 +12,10 @@
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -23,6 +23,7 @@
             android:name=".data.ProductProvider"
             android:authorities="com.example.ibrakarim.inventoryapp" />
 
+        <activity android:name=".ui.AddProductActivity"></activity>
     </application>
 
 </manifest>

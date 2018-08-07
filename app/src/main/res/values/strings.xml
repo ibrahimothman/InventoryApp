@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">InventoryApp</string>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="create_item_activity_toolbar">Create Product</string>
+    <string name="picture">picture</string>
+    <string name="name">NAME</string>
+    <string name="DESCRIPTION">DESCRIPTION</string>
+    <string name="price">PRICE</string>
+    <string name="quantity">QUANTITY</string>
 </resources>
