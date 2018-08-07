@@ -6,11 +6,11 @@ import android.provider.BaseColumns;
 public class Contract {
 
 
-    public static final String AUTHORITY = "com.ibra.moviesseries";
+    public static final String AUTHORITY = "com.example.ibrakarim.inventoryapp";
     public static final Uri BASE_URI = Uri.parse("content://"+AUTHORITY);
     public static final String PATH = "products";
 
-    public static class FavEntry implements BaseColumns {
+    public static class ProductEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH).build();
         public static final String TABLE_NAME = "product_table";
             public static final String NAME_COL = "name";
