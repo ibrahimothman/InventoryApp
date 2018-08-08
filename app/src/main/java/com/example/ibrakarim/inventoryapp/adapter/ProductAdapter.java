@@ -1,9 +1,13 @@
 package com.example.ibrakarim.inventoryapp.adapter;
 
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +47,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText("$"+product.getPrice());
         holder.mProductQuantity.setText(product.getQuantity()+" pieces");
+
+        byte[]imageArray = product.getImage();
+        Log.d("aaaaa",imageArray+"");
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageArray,0,imageArray.length);
+        holder.mProductImage.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

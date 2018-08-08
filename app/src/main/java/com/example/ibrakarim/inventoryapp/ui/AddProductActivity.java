@@ -2,13 +2,16 @@ package com.example.ibrakarim.inventoryapp.ui;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -29,7 +32,10 @@ import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 import com.example.ibrakarim.inventoryapp.model.Product;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -63,6 +69,8 @@ public class AddProductActivity extends AppCompatActivity implements
     private Product mProduct;
     private String status,name,price,desc,quantity;
     private static final int REQUEST_PERMISSION_CODE = 18;
+    private Bitmap bitmap;
+    private ProgressDialog mProgressDialog;
 
 
     @Override
@@ -70,6 +78,9 @@ public class AddProductActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
         ButterKnife.bind(this);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Processing...");
 
         status = "new";
 
@@ -126,14 +137,22 @@ public class AddProductActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK && data != null){
             Uri imageUri = data.getData();
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                mProductImage.setImageBitmap(bitmap);
+            CropImage.activity(imageUri)
+                    .start(this);
+        }if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    mProductImage.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
+
 
         }
     }
@@ -145,6 +164,8 @@ public class AddProductActivity extends AppCompatActivity implements
         String desc = mDescText.getText().toString();
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
+
+        
 
         ContentValues cv = new ContentValues();
         cv.put(Contract.ProductEntry.NAME_COL,name);
@@ -168,21 +189,30 @@ public class AddProductActivity extends AppCompatActivity implements
     }
 
     private void insertIntoDB() {
-
         String name = mNameText.getText().toString();
         String desc = mDescText.getText().toString();
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
+        byte[]imageArray = getImageByteArray(bitmap);
 
         ContentValues cv = new ContentValues();
         cv.put(Contract.ProductEntry.NAME_COL,name);
         cv.put(Contract.ProductEntry.PRICE_COL,price);
         cv.put(Contract.ProductEntry.DESCRIPTION_COL,desc);
         cv.put(Contract.ProductEntry.QUANTITY_COL,quantity);
+        cv.put(Contract.ProductEntry.IMAGE,imageArray);
         getContentResolver().insert(Contract.ProductEntry.CONTENT_URI,cv);
 
         Intent returnIntent = new Intent(this,MainActivity.class);
+        startActivity(returnIntent);
         finish();
+
+    }
+
+    private byte[] getImageByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 
 
@@ -219,4 +249,6 @@ public class AddProductActivity extends AppCompatActivity implements
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
+
+
 }

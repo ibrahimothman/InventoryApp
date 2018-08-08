@@ -3,15 +3,27 @@ package com.example.ibrakarim.inventoryapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Product implements Parcelable {
+public class Product   {
     private int id;
     private String name;
     private String price;
     private String desc;
     private String quantity;
+    private byte[] image;
 
-    public Product(String name, String price, String desc, String quantity,int id) {
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+
+
+    public Product(String name, String price, String desc, String quantity, int id, byte[]image) {
         this.name = name;
+        this.image = image;
         this.price = price;
         this.desc = desc;
         this.quantity = quantity;
@@ -30,25 +42,7 @@ public class Product implements Parcelable {
         this.id = id;
     }
 
-    protected Product(Parcel in) {
-        name = in.readString();
-        price = in.readString();
-        desc = in.readString();
-        quantity = in.readString();
-        id = in.readInt();
-    }
 
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
 
     public String getName() {
         return name;
@@ -82,17 +76,7 @@ public class Product implements Parcelable {
         this.quantity = quantity;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(price);
-        parcel.writeString(desc);
-        parcel.writeString(quantity);
-        parcel.writeInt(id);
-    }
+
+
 }
