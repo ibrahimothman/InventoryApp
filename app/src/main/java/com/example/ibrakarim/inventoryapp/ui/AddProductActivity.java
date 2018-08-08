@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ibrakarim.inventoryapp.R;
+import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
+import com.example.ibrakarim.inventoryapp.model.Product;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +40,8 @@ public class AddProductActivity extends AppCompatActivity {
     CircleImageView mProductImage;
     @BindView(R.id.change_image_fab)
     FloatingActionButton mChangeImageFAB;
+    private Product mProduct;
+    private String status;
 
 
     @Override
@@ -45,6 +49,8 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
         ButterKnife.bind(this);
+
+        status = "new";
 
         // setup toolbar
         setSupportActionBar(mToolbar);
@@ -54,9 +60,29 @@ public class AddProductActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertIntoDB();
+                if(status.equals("new")) insertIntoDB();
+                else if (status.equals("update")) updateInDb();
+
             }
         });
+
+        Intent intent = getIntent();
+        if(intent != null && intent.getParcelableExtra(ProductDetailActivity.PRODUCT_EXTRA) != null){
+            mProduct = intent.getParcelableExtra(ProductDetailActivity.PRODUCT_EXTRA);
+            status = "update";
+            updateUI();
+        }
+    }
+
+    private void updateInDb() {
+
+    }
+
+    private void updateUI() {
+        mNameText.setText(mProduct.getName());
+        mDescText.setText(mProduct.getDesc());
+        mPriceText.setText(mProduct.getPrice());
+        mQuantityText.setText(mProduct.getQuantity());
     }
 
     private void insertIntoDB() {

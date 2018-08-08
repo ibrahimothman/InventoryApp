@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class ProductDetailActivity extends AppCompatActivity {
 
     private static final String TAG = ProductDetailActivity.class.getSimpleName();
-    private static final String PRODUCT_EXTRA = "PRODUCT_EXTRA";
+    public static final String PRODUCT_EXTRA = "PRODUCT_EXTRA";
     @BindView(R.id.product_image)
     ImageView mProductImageview;
     @BindView(R.id.product_name)
@@ -73,7 +73,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         mEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                updateProduct();
             }
         });
 
@@ -97,7 +97,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG,"yes pressed");
-                updateProduct();
+                // delete
             }
         });
         builder.setNegativeButton("No",null);
@@ -106,8 +106,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void updateProduct() {
         Intent editIntent = new Intent(this,AddProductActivity.class);
-        editIntent.putExtra(PRODUCT_EXTRA,mProduct);
-        startActivity(editIntent);
+        if(mProduct != null) {
+            editIntent.putExtra(PRODUCT_EXTRA, mProduct);
+            startActivity(editIntent);
+        }else Log.d(TAG,"something wrong");
     }
 
 
