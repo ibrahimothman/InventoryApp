@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductHolder> {
 
-    public static final String PRODUCT_DETAIL_EXTRA = "PRODUCT_DETAIL_EXTRA";
+    public static final String PRODUCT_ID_EXTRA = "PRODUCT_ID_EXTRA";
     private List<Product> productList;
     private Context mContext;
 
@@ -48,7 +48,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             @Override
             public void onClick(View view) {
                 Intent detailIntent = new Intent(mContext, ProductDetailActivity.class);
-                detailIntent.putExtra(PRODUCT_DETAIL_EXTRA,productList.get(position));
+                detailIntent.putExtra(PRODUCT_ID_EXTRA,productList.get(position).getId());
                 mContext.startActivity(detailIntent);
             }
         });

@@ -114,7 +114,20 @@ public class ProductProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = getUriMatcher().match(uri);
+        int mId;
+        switch (match) {
+            case TASK_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                mId = db.update(Contract.ProductEntry.TABLE_NAME,values, "_id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("invalid uri");
+        }
+
+        getContext().getContentResolver().notifyChange(uri,null);
+        return mId;
     }
 
 }

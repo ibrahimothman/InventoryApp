@@ -1,7 +1,9 @@
 package com.example.ibrakarim.inventoryapp.ui;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,6 +78,24 @@ public class AddProductActivity extends AppCompatActivity {
 
     private void updateInDb() {
 
+        String name = mNameText.getText().toString();
+        String desc = mDescText.getText().toString();
+        String price = mPriceText.getText().toString();
+        String quantity = mQuantityText.getText().toString();
+
+        ContentValues cv = new ContentValues();
+        cv.put(Contract.ProductEntry.NAME_COL,name);
+        cv.put(Contract.ProductEntry.PRICE_COL,price);
+        cv.put(Contract.ProductEntry.DESCRIPTION_COL,desc);
+        cv.put(Contract.ProductEntry.QUANTITY_COL,quantity);
+
+        int productId = mProduct.getId();
+        Uri uri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI,productId);
+        getContentResolver().update(uri,cv,null,null);
+
+        Intent returnIntent = new Intent(this,ProductDetailActivity.class);
+        returnIntent.putExtra(ProductAdapter.PRODUCT_ID_EXTRA,productId);
+        finish();
     }
 
     private void updateUI() {

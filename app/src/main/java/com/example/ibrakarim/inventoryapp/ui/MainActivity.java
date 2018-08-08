@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             data.moveToFirst();
             do{
                 Product product = new Product();
+                product.setId(data.getInt(data.getColumnIndex(Contract.ProductEntry._ID)));
                 product.setName(data.getString(data.getColumnIndex(Contract.ProductEntry.NAME_COL)));
                 product.setDesc(data.getString(data.getColumnIndex(Contract.ProductEntry.DESCRIPTION_COL)));
                 product.setPrice(data.getString(data.getColumnIndex(Contract.ProductEntry.PRICE_COL)));
