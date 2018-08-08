@@ -1,17 +1,18 @@
 package com.example.ibrakarim.inventoryapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.ibrakarim.inventoryapp.R;
-import com.example.ibrakarim.inventoryapp.adapter.model.Product;
+import com.example.ibrakarim.inventoryapp.model.Product;
+import com.example.ibrakarim.inventoryapp.ui.ProductDetailActivity;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductHolder> {
 
+    public static final String PRODUCT_DETAIL_EXTRA = "PRODUCT_DETAIL_EXTRA";
     private List<Product> productList;
     private Context mContext;
 
@@ -36,11 +38,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductHolder holder, final int position) {
         Product product = productList.get(position);
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText("$"+product.getPrice());
         holder.mProductQuantity.setText(product.getQuantity()+" pieces");
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent detailIntent = new Intent(mContext, ProductDetailActivity.class);
+                detailIntent.putExtra(PRODUCT_DETAIL_EXTRA,productList.get(position));
+                mContext.startActivity(detailIntent);
+            }
+        });
     }
 
     @Override

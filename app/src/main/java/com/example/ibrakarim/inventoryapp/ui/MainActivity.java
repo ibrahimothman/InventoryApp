@@ -17,7 +17,7 @@ import android.view.View;
 
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
-import com.example.ibrakarim.inventoryapp.adapter.model.Product;
+import com.example.ibrakarim.inventoryapp.model.Product;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 
 import java.util.ArrayList;
