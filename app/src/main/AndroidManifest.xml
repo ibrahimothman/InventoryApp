@@ -23,7 +23,8 @@
             android:name=".data.ProductProvider"
             android:authorities="com.example.ibrakarim.inventoryapp" />
 
-        <activity android:name=".ui.AddProductActivity"></activity>
+        <activity android:name=".ui.AddProductActivity" />
+        <activity android:name=".ui.ProductDetailActivity"></activity>
     </application>
 
 </manifest>

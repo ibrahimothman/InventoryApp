@@ -143,7 +143,7 @@
         >
 
         <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/product_pri_edittext_edittext"
+            android:id="@+id/product_quantity_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_quantity"
