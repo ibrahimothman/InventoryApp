@@ -72,6 +72,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             getSupportLoaderManager().initLoader(LOADER_ID,null,this);
         }
 
+        mEditBtn.setVisibility(View.INVISIBLE);
+        mDeleteBtn.setVisibility(View.INVISIBLE);
         // edit product
         mEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +103,11 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG,"yes pressed");
                 // delete
+                Uri uri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI,mProductId);
+                getContentResolver().delete(uri,null,null);
+                Intent returnIntent = new Intent(getApplicationContext(),MainActivity.class);
+                finish();
+
             }
         });
         builder.setNegativeButton("No",null);
@@ -110,7 +117,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     private void updateProduct() {
         Intent editIntent = new Intent(this,AddProductActivity.class);
         if(mProduct != null) {
-            editIntent.putExtra(PRODUCT_EXTRA, mProduct);
+            editIntent.putExtra(ProductAdapter.PRODUCT_ID_EXTRA, mProductId);
             startActivity(editIntent);
         }else Log.d(TAG,"something wrong");
     }
@@ -134,6 +141,9 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if(cursor.getCount() != 0){
             mProgressBar.setVisibility(View.INVISIBLE);
+            mEditBtn.setVisibility(View.VISIBLE);
+            mDeleteBtn.setVisibility(View.VISIBLE);
+
             cursor.moveToFirst();
             mProduct  = new Product();
             mProduct.setName(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.NAME_COL)));

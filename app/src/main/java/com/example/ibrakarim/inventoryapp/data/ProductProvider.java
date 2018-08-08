@@ -76,7 +76,7 @@ public class ProductProvider extends ContentProvider {
                 long id = db.insert(Contract.ProductEntry.TABLE_NAME, null, values);
                 if (id > 0) {
                     mUri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI, id);
-                    Toast.makeText(getContext(), "successfully added to watchlist", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "successfully inserted", Toast.LENGTH_LONG).show();
                 } else {
                     throw new SQLException();
                 }
@@ -121,6 +121,8 @@ public class ProductProvider extends ContentProvider {
             case TASK_WITH_ID:
                 String id = uri.getPathSegments().get(1);
                 mId = db.update(Contract.ProductEntry.TABLE_NAME,values, "_id=?", new String[]{id});
+                Toast.makeText(getContext(), "successfully updated", Toast.LENGTH_LONG).show();
+
                 break;
             default:
                 throw new UnsupportedOperationException("invalid uri");
