@@ -1,13 +1,17 @@
 package com.example.ibrakarim.inventoryapp.ui;
 
 
+import android.Manifest;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,11 +23,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 import com.example.ibrakarim.inventoryapp.model.Product;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +42,7 @@ public class AddProductActivity extends AppCompatActivity implements
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
     private static final int LOADER_ID = 17;
+    private static final int REQUEST_IMAGE_CODE = 20;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.product_name_edittext)
@@ -53,6 +62,7 @@ public class AddProductActivity extends AppCompatActivity implements
     private int mProductId;
     private Product mProduct;
     private String status,name,price,desc,quantity;
+    private static final int REQUEST_PERMISSION_CODE = 18;
 
 
     @Override
@@ -82,6 +92,49 @@ public class AddProductActivity extends AppCompatActivity implements
             mProductId = intent.getIntExtra(ProductAdapter.PRODUCT_ID_EXTRA,0);
             status = "update";
             getSupportLoaderManager().initLoader(LOADER_ID,null,this);
+        }
+
+        mChangeImageFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickupImage();
+            }
+        });
+    }
+
+    private void pickupImage() {
+        ActivityCompat.requestPermissions(AddProductActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == REQUEST_PERMISSION_CODE){
+          Intent intent = new Intent(Intent.ACTION_PICK);
+          intent.setType("image/*");
+          startActivityForResult(intent,REQUEST_IMAGE_CODE);
+        }else{
+            Toast.makeText(this, "You have to grant permission to continue", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK && data != null){
+            Uri imageUri = data.getData();
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                mProductImage.setImageBitmap(bitmap);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
