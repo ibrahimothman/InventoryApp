@@ -7,4 +7,8 @@
     <string name="DESCRIPTION">DESCRIPTION</string>
     <string name="price">PRICE</string>
     <string name="quantity">QUANTITY</string>
+    <string name="enter_product_s_name">Enter product\'s name</string>
+    <string name="enter_product_s_description">Enter product\'s description</string>
+    <string name="enter_quantity">Enter quantity</string>
+    <string name="save">SAVE</string>
 </resources>
