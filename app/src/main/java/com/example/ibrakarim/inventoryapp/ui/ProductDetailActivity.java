@@ -32,8 +32,9 @@ import butterknife.ButterKnife;
 public class ProductDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = ProductDetailActivity.class.getSimpleName();
-    public static final String PRODUCT_EXTRA = "PRODUCT_EXTRA";
+
     private static final int LOADER_ID = 16;
+    public static final String PRODUCT_ID_EXTRA = "PRODUCT_ID_EXTRA";
     @BindView(R.id.product_image)
     ImageView mProductImageview;
     @BindView(R.id.product_name)
@@ -115,9 +116,9 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
     }
 
     private void updateProduct() {
-        Intent editIntent = new Intent(this,AddProductActivity.class);
+        Intent editIntent = new Intent(this,EditProductActivity.class);
         if(mProduct != null) {
-            editIntent.putExtra(ProductAdapter.PRODUCT_ID_EXTRA, mProductId);
+            editIntent.putExtra(PRODUCT_ID_EXTRA, mProductId);
             startActivity(editIntent);
         }else Log.d(TAG,"something wrong");
     }
