@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -151,7 +153,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             mProduct.setDesc(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.DESCRIPTION_COL)));
             mProduct.setPrice(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.PRICE_COL)));
             mProduct.setQuantity(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.QUANTITY_COL)));
-
+            mProduct.setImage(cursor.getBlob(cursor.getColumnIndex(Contract.ProductEntry.IMAGE)));
             setupToolbar();
             setupUI();
         }
@@ -178,5 +180,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         mProductPrice.setText("$ "+mProduct.getPrice());
         mProductQuantity.setText(mProduct.getQuantity()+" pieces");
         mProductDetail.setText(mProduct.getDesc());
+        Bitmap bitmap = BitmapFactory.decodeByteArray(mProduct.getImage(),0,mProduct.getImage().length);
+        mProductImageview.setImageBitmap(bitmap);
     }
 }

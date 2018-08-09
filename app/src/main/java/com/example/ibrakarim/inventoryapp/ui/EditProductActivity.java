@@ -137,7 +137,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
 
     }
 
-    
+
 
 
     private void updatDb() {
@@ -160,7 +160,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         getContentResolver().update(uri,cv,null,null);
 
         Intent returnIntent = new Intent(this,ProductDetailActivity.class);
-        returnIntent.putExtra(ProductAdapter.PRODUCT_ID_EXTRA,mProductId);
+        returnIntent.putExtra(ProductDetailActivity.PRODUCT_ID_EXTRA,mProductId);
         finish();
     }
 
