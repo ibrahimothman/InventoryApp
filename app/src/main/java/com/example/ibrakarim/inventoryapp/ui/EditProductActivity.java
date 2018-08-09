@@ -1,14 +1,17 @@
 package com.example.ibrakarim.inventoryapp.ui;
 
 
+import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
@@ -41,6 +44,8 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
     private static final int LOADER_ID = 22;
     private static final String TAG = EditProductActivity.class.getSimpleName();
     private static final int REQUEST_IMAGE_CODE = 120;
+    private static final int REQUEST_CAMERA_CODE = 40;
+    private static final int REQUEST_GALLERY_CODE = 50;
 
 
     @BindView(R.id.toolbar)
@@ -85,9 +90,11 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         mChangeImageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickupImage();
+                displayDialog();
+
             }
         });
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +103,38 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
             }
         });
     }
+
+    private void displayDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String[]options = new String[]{"pick up from camera","pick up from gallery"};
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    // from camera
+                    pickupFromCamera();
+                }else if(i == 1){
+                    // pickupFromGallery
+                    pickupFromGallery();
+                }
+            }
+        });
+
+        builder.setTitle("choose an option");
+        builder.show();
+    }
+
+    private void pickupFromCamera() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, REQUEST_CAMERA_CODE);
+    }
+
+    private void pickupFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_GALLERY_CODE);
+    }
+
 
     private void pickupImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -106,7 +145,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK && data != null){
+        if((requestCode == REQUEST_GALLERY_CODE || requestCode == REQUEST_CAMERA_CODE) && resultCode == RESULT_OK && data != null){
             Uri imageUri = data.getData();
             CropImage.activity(imageUri)
                     .start(this);

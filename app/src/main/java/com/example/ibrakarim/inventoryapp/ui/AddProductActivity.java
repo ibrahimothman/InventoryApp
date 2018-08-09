@@ -1,28 +1,20 @@
 package com.example.ibrakarim.inventoryapp.ui;
 
 
-import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,14 +22,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.ibrakarim.inventoryapp.R;
-import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 import com.example.ibrakarim.inventoryapp.helper.ImageHelper;
 import com.example.ibrakarim.inventoryapp.model.Product;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -49,7 +38,8 @@ public class AddProductActivity extends AppCompatActivity{
 
     private static final String TAG = AddProductActivity.class.getSimpleName();
 
-    private static final int REQUEST_IMAGE_CODE = 20;
+    private static final int REQUEST_GALLERY_CODE = 20;
+    private static final int REQUEST_CAMERA_CODE = 30;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.product_name_edittext)
@@ -104,22 +94,48 @@ public class AddProductActivity extends AppCompatActivity{
         mChangeImageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickupImage();
+                displayDialog();
+
             }
         });
     }
 
-    private void pickupImage() {
+    private void displayDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String[]options = new String[]{"pick up from camera","pick up from gallery"};
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    // from camera
+                    pickupFromCamera();
+                }else if(i == 1){
+                    // pickupFromGallery
+                    pickupFromGallery();
+                }
+            }
+        });
+
+        builder.setTitle("choose an option");
+        builder.show();
+    }
+
+    private void pickupFromCamera() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, REQUEST_CAMERA_CODE);
+    }
+
+    private void pickupFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent,REQUEST_IMAGE_CODE);
+        startActivityForResult(intent, REQUEST_GALLERY_CODE);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_IMAGE_CODE && resultCode == RESULT_OK && data != null){
+        if((requestCode == REQUEST_GALLERY_CODE || requestCode == REQUEST_CAMERA_CODE) && resultCode == RESULT_OK && data != null){
             Uri imageUri = data.getData();
             CropImage.activity(imageUri)
                     .start(this);
