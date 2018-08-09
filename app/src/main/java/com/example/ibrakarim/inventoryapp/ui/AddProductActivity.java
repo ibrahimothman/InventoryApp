@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -70,6 +71,7 @@ public class AddProductActivity extends AppCompatActivity{
     private static final int REQUEST_PERMISSION_CODE = 18;
     private Bitmap bitmap;
     private ProgressDialog mProgressDialog;
+    private byte[] imageArray;
 
 
     @Override
@@ -87,6 +89,8 @@ public class AddProductActivity extends AppCompatActivity{
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.create_item_activity_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,23 +144,35 @@ public class AddProductActivity extends AppCompatActivity{
 
 
     private void insertIntoDB() {
+
+        ContentValues cv = new ContentValues();
         String name = mNameText.getText().toString();
         String desc = mDescText.getText().toString();
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
-        byte[]imageArray = ImageHelper.getImageByteArray(bitmap);
 
-        ContentValues cv = new ContentValues();
-        cv.put(Contract.ProductEntry.NAME_COL,name);
-        cv.put(Contract.ProductEntry.PRICE_COL,price);
-        cv.put(Contract.ProductEntry.DESCRIPTION_COL,desc);
-        cv.put(Contract.ProductEntry.QUANTITY_COL,quantity);
-        cv.put(Contract.ProductEntry.IMAGE,imageArray);
-        getContentResolver().insert(Contract.ProductEntry.CONTENT_URI,cv);
 
-        Intent returnIntent = new Intent(this,MainActivity.class);
-        startActivity(returnIntent);
-        finish();
+
+        if(bitmap != null) {
+            imageArray = ImageHelper.getImageByteArray(bitmap);
+        }else {
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.main_default_image);
+            imageArray = ImageHelper.getImageByteArray(bitmap);
+        }
+        if(!name.isEmpty() && !price.isEmpty() && !desc.isEmpty() && !quantity.isEmpty()) {
+
+
+            cv.put(Contract.ProductEntry.NAME_COL, name);
+            cv.put(Contract.ProductEntry.PRICE_COL, price);
+            cv.put(Contract.ProductEntry.DESCRIPTION_COL, desc);
+            cv.put(Contract.ProductEntry.QUANTITY_COL, quantity);
+            cv.put(Contract.ProductEntry.IMAGE, imageArray);
+            getContentResolver().insert(Contract.ProductEntry.CONTENT_URI, cv);
+
+            Intent returnIntent = new Intent(this, MainActivity.class);
+            startActivity(returnIntent);
+            finish();
+        }else Toast.makeText(this, "Please fill out all information", Toast.LENGTH_LONG).show();
 
     }
 

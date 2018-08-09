@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductHolder> {
 
@@ -78,7 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
 
         @BindView(R.id.product_image)
-        ImageView mProductImage;
+        CircleImageView mProductImage;
         @BindView(R.id.product_name)
         TextView mProductName;
         @BindView(R.id.product_price)
