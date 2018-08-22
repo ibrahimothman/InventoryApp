@@ -1,5 +1,5 @@
 # InventoryApp
-Simple android app help you to run a product store
+Simple android app help you to run an product store
 
 * You can easly add a product with its details
 
