@@ -153,14 +153,15 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    Log.d(TAG,"bitmab is "+bitmap.toString());
-                    updateImage(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+
+//                try {
+//                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
+//                    bitmap = BitmapFactory.decodeStream(inputStream);
+//                    Log.d(TAG,"bitmab is "+bitmap.toString());
+//                    updateImage(bitmap);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
             }
 
 
