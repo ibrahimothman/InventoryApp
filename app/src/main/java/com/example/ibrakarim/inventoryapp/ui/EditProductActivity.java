@@ -68,6 +68,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
 
     private int mProductId;
     private Bitmap bitmap;
+    private Uri resultUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         }if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
+                resultUri = result.getUri();
 
 //                try {
 //                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
@@ -176,9 +177,6 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         getContentResolver().update(uri,cv,null,null);
 
     }
-
-
-
 
     private void updatDb() {
 
