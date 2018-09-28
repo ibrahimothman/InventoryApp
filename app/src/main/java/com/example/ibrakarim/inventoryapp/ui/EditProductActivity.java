@@ -68,7 +68,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
 
     private int mProductId;
     private Bitmap bitmap;
-    private Uri resultUri;
+    private String imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,30 +153,13 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         }if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                resultUri = result.getUri();
-
-//                try {
-//                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
-//                    bitmap = BitmapFactory.decodeStream(inputStream);
-//                    Log.d(TAG,"bitmab is "+bitmap.toString());
-//                    updateImage(bitmap);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
+                imageUri = result.getUri().toString();
             }
 
 
         }
     }
 
-    private void updateImage(Bitmap bitmap) {
-        byte[]imageArray = ImageHelper.getImageByteArray(bitmap);
-        ContentValues cv = new ContentValues();
-        cv.put(Contract.ProductEntry.IMAGE,imageArray);
-        Uri uri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI,mProductId);
-        getContentResolver().update(uri,cv,null,null);
-
-    }
 
     private void updatDb() {
 
@@ -185,14 +168,13 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         String desc = mDescText.getText().toString();
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
-        byte[]imageArray = ImageHelper.getImageByteArray(bitmap);
 
         ContentValues cv = new ContentValues();
         cv.put(Contract.ProductEntry.NAME_COL,name);
         cv.put(Contract.ProductEntry.PRICE_COL,price);
         cv.put(Contract.ProductEntry.DESCRIPTION_COL,desc);
         cv.put(Contract.ProductEntry.QUANTITY_COL,quantity);
-        cv.put(Contract.ProductEntry.IMAGE,imageArray);
+        cv.put(Contract.ProductEntry.IMAGE, imageUri);
 
         Uri uri = ContentUris.withAppendedId(Contract.ProductEntry.CONTENT_URI,mProductId);
         getContentResolver().update(uri,cv,null,null);
