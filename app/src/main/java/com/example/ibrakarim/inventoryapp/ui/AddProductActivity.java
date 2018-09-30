@@ -62,6 +62,7 @@ public class AddProductActivity extends AppCompatActivity{
     private Bitmap bitmap;
     private ProgressDialog mProgressDialog;
     private byte[] imageArray;
+    private String imageUri;
 
 
     @Override
@@ -143,14 +144,7 @@ public class AddProductActivity extends AppCompatActivity{
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                try {
-                    InputStream inputStream = getContentResolver().openInputStream(resultUri);
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                    Log.d(TAG,"bitmab is "+bitmap.toString());
-                    mProductImage.setImageBitmap(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                imageUri = result.getUri().toString();
             }
 
 
@@ -167,22 +161,14 @@ public class AddProductActivity extends AppCompatActivity{
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
 
-
-
-        if(bitmap != null) {
-            imageArray = ImageHelper.getImageByteArray(bitmap);
-        }else {
-            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.main_default_image);
-            imageArray = ImageHelper.getImageByteArray(bitmap);
-        }
-        if(!name.isEmpty() && !price.isEmpty() && !desc.isEmpty() && !quantity.isEmpty()) {
+        if(!name.isEmpty() && !price.isEmpty() && !desc.isEmpty() && !quantity.isEmpty() && imageUri != null) {
 
 
             cv.put(Contract.ProductEntry.NAME_COL, name);
             cv.put(Contract.ProductEntry.PRICE_COL, price);
             cv.put(Contract.ProductEntry.DESCRIPTION_COL, desc);
             cv.put(Contract.ProductEntry.QUANTITY_COL, quantity);
-            cv.put(Contract.ProductEntry.IMAGE, imageArray);
+            cv.put(Contract.ProductEntry.IMAGE, imageUri);
             getContentResolver().insert(Contract.ProductEntry.CONTENT_URI, cv);
 
             Intent returnIntent = new Intent(this, MainActivity.class);
