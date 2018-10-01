@@ -9,19 +9,19 @@ public class Product   {
     private String price;
     private String desc;
     private String quantity;
-    private byte[] image;
+    private String image;
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
 
 
-    public Product(String name, String price, String desc, String quantity, int id, byte[]image) {
+    public Product(String name, String price, String desc, String quantity, int id, String image) {
         this.name = name;
         this.image = image;
         this.price = price;
