@@ -27,6 +27,7 @@ import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 import com.example.ibrakarim.inventoryapp.model.Product;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -153,7 +154,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             mProduct.setDesc(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.DESCRIPTION_COL)));
             mProduct.setPrice(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.PRICE_COL)));
             mProduct.setQuantity(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.QUANTITY_COL)));
-            mProduct.setImage(cursor.getBlob(cursor.getColumnIndex(Contract.ProductEntry.IMAGE)));
+            mProduct.setImage(cursor.getString(cursor.getColumnIndex(Contract.ProductEntry.IMAGE)));
             setupToolbar();
             setupUI();
         }
@@ -180,7 +181,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         mProductPrice.setText("$ "+mProduct.getPrice());
         mProductQuantity.setText(mProduct.getQuantity()+" pieces");
         mProductDetail.setText(mProduct.getDesc());
-        Bitmap bitmap = BitmapFactory.decodeByteArray(mProduct.getImage(),0,mProduct.getImage().length);
-        mProductImageview.setImageBitmap(bitmap);
+        String image = mProduct.getImage();
+        Picasso.get().load(Uri.parse(image)).into(mProductImageview);
     }
 }
