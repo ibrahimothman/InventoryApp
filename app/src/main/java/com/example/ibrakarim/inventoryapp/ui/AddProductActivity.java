@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.data.Contract;
-import com.example.ibrakarim.inventoryapp.helper.ImageHelper;
 import com.example.ibrakarim.inventoryapp.model.Product;
 import com.theartofdev.edmodo.cropper.CropImage;
 

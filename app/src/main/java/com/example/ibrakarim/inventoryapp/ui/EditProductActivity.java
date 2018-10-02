@@ -29,7 +29,6 @@ import android.widget.EditText;
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
-import com.example.ibrakarim.inventoryapp.helper.ImageHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.FileNotFoundException;
