@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 product.setDesc(data.getString(data.getColumnIndex(Contract.ProductEntry.DESCRIPTION_COL)));
                 product.setPrice(data.getString(data.getColumnIndex(Contract.ProductEntry.PRICE_COL)));
                 product.setQuantity(data.getString(data.getColumnIndex(Contract.ProductEntry.QUANTITY_COL)));
-                product.setImage(data.getBlob(data.getColumnIndex(Contract.ProductEntry.IMAGE)));
+                product.setImage(data.getString(data.getColumnIndex(Contract.ProductEntry.IMAGE)));
 
                 productList.add(product);
             }while (data.moveToNext());
