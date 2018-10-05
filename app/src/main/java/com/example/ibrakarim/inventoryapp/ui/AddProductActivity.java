@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.data.Contract;
 import com.example.ibrakarim.inventoryapp.model.Product;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.FileNotFoundException;
@@ -144,6 +145,7 @@ public class AddProductActivity extends AppCompatActivity{
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 imageUri = result.getUri().toString();
+                Picasso.get().load(resultUri).into(mProductImage);
             }
 
 
@@ -160,9 +162,8 @@ public class AddProductActivity extends AppCompatActivity{
         String price = mPriceText.getText().toString();
         String quantity = mQuantityText.getText().toString();
 
-        if(!name.isEmpty() && !price.isEmpty() && !desc.isEmpty() && !quantity.isEmpty() && imageUri != null) {
-
-
+        if(!name.isEmpty() && !price.isEmpty() && !desc.isEmpty() && !quantity.isEmpty() &&
+                imageUri != null) {
             cv.put(Contract.ProductEntry.NAME_COL, name);
             cv.put(Contract.ProductEntry.PRICE_COL, price);
             cv.put(Contract.ProductEntry.DESCRIPTION_COL, desc);
