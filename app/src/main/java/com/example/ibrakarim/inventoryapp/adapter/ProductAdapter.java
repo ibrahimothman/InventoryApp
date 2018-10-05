@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.model.Product;
 import com.example.ibrakarim.inventoryapp.ui.ProductDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,11 +50,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         holder.mProductName.setText(product.getName());
         holder.mProductPrice.setText("$"+product.getPrice());
         holder.mProductQuantity.setText(product.getQuantity()+" pieces");
+        Picasso.get().load(Uri.parse(product.getImage())).into(holder.mProductImage);
 
-        byte[]imageArray = product.getImage();
-        Log.d("aaaaa",imageArray+"");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageArray,0,imageArray.length);
-        holder.mProductImage.setImageBitmap(bitmap);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
