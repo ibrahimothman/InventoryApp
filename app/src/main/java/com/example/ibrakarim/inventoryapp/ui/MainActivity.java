@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.ibrakarim.inventoryapp.R;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     private static final int LOADER_ID = 15;
+    private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.recycler_list)
     RecyclerView mRecyclerView;
 
@@ -66,14 +68,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        Log.d(TAG,"onCreateLoader");
         return new CursorLoader(this, Contract.ProductEntry.CONTENT_URI,null,null,null, Contract.ProductEntry.TIME);
 
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if(data.getCount() != 0){
-            productList.clear();
+        Log.d(TAG,"onLoadFinished");
+        productList.clear();
+        if(data != null && data.getCount() != 0){
+            Log.d(TAG,"cursor not null and its size is "+data.getCount());
             data.moveToFirst();
             do{
                 Product product = new Product();
@@ -86,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 productList.add(product);
             }while (data.moveToNext());
+            productAdapter.swip(productList);
+        }else {
+            Log.d(TAG,"cursor not null and its size is "+data.getCount());
             productAdapter.swip(productList);
         }
     }
