@@ -205,14 +205,14 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
             String desc = data.getString(data.getColumnIndex(Contract.ProductEntry.DESCRIPTION_COL));
             String price = data.getString(data.getColumnIndex(Contract.ProductEntry.PRICE_COL));
             String quantity = data.getString(data.getColumnIndex(Contract.ProductEntry.QUANTITY_COL));
-            byte[]imageArray = data.getBlob(data.getColumnIndex(Contract.ProductEntry.IMAGE));
-            updateUI(name,desc,price,quantity,imageArray);
+            String image = data.getString(data.getColumnIndex(Contract.ProductEntry.IMAGE));
+            updateUI(name,desc,price,quantity,image);
 
 
         }
     }
 
-    private void updateUI(String name, String desc, String price, String quantity,byte[]imageArray) {
+    private void updateUI(String name, String desc, String price, String quantity,String image) {
         mNameText.setText(name);
         mDescText.setText(desc);
         mPriceText.setText(price);
