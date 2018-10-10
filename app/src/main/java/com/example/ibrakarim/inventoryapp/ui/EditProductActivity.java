@@ -29,6 +29,7 @@ import android.widget.EditText;
 import com.example.ibrakarim.inventoryapp.R;
 import com.example.ibrakarim.inventoryapp.adapter.ProductAdapter;
 import com.example.ibrakarim.inventoryapp.data.Contract;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.FileNotFoundException;
@@ -217,7 +218,7 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
         mDescText.setText(desc);
         mPriceText.setText(price);
         mQuantityText.setText(quantity);
-        mProductImage.setImageBitmap(BitmapFactory.decodeByteArray(imageArray,0,imageArray.length));
+        Picasso.get().load(image).into(mProductImage);
     }
 
     @Override
