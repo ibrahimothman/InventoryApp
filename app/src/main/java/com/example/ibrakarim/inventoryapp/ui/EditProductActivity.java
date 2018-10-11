@@ -154,6 +154,8 @@ public class EditProductActivity extends AppCompatActivity implements LoaderMana
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 imageUri = result.getUri().toString();
+                // use picasso to display updated image immediately
+                Picasso.get().load(Uri.parse(imageUri)).into(mProductImage);
             }
 
 
